@@ -1,0 +1,24 @@
+{
+  "name": "chainpe-agent-surfaces-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Runnable examples: the same ChainPe paid fetch from a Vercel AI SDK agent and a LangChain agent.",
+  "scripts": {
+    "vercel": "tsx vercel-agent.ts",
+    "langchain": "tsx langchain-agent.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^2.0.0",
+    "@chainpe/ai-tools": "file:../../packages/chainpe-ai-tools",
+    "@chainpe/sdk": "file:../../packages/chainpe-sdk",
+    "@langchain/anthropic": "^0.3.0",
+    "@langchain/core": "^0.3.0",
+    "@langchain/langgraph": "^0.2.0",
+    "ai": "^6.0.0",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.4"
+  }
+}

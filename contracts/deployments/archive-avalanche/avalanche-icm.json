@@ -1,0 +1,16 @@
+{
+  "network": "avalanche",
+  "teleporterMessenger": "0x253b2784c75e510dD0fF1da844684a1aC0aa5fcf",
+  "chainPeICMReceiver": "0xc8aBD919F597C46dA889e76704F69A2809cd6D33",
+  "chainPeICMSender": "0x097D7D4B46CB894142a72E91c3b8F8b5834255dF",
+  "deployer": "0x3b8a312fac101E7163F9701457d8Dc46cE8fd30a",
+  "deployedAt": "2026-06-17T06:11:20.046Z",
+  "trustedSenders": {
+    "0x0427d4b22a2a78bcddd456742caf91b56badbff985ee19aef14573e7343fd652": {
+      "description": "Avalanche C-Chain mainnet",
+      "trustedSender": "0x097D7D4B46CB894142a72E91c3b8F8b5834255dF",
+      "configuredAt": "2026-06-17",
+      "configureTx": "0x245a233be35cbc576aeb60ff095cadadad037c94a3e37acfb5b97cbd4e23e684"
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "name": "@chainpe/cli",
+  "version": "3.0.0",
+  "description": "ChainPe Provider CLI — Monetize any API with x402 micropayments on Arbitrum",
+  "type": "module",
+  "bin": {
+    "chainpe": "./dist/cli.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saxux2/chainpe.git",
+    "directory": "packages/chainpe"
+  },
+  "bugs": {
+    "url": "https://github.com/saxux2/chainpe/issues"
+  },
+  "homepage": "https://github.com/saxux2/chainpe/tree/main/packages/chainpe#readme",
+  "author": "ChainPe",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "x402",
+    "arbitrum",
+    "proxy",
+    "micropayments",
+    "pay-per-request",
+    "http-402",
+    "blockchain",
+    "usdc",
+    "api-monetization",
+    "reverse-proxy",
+    "ai-agents"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@chainpe/sdk": "^0.3.0",
+    "@clack/prompts": "^0.9.1",
+    "@coinbase/x402": "^2.1.0",
+    "@x402/core": "^2.27.0",
+    "@x402/evm": "^2.27.0",
+    "@x402/express": "^2.27.0",
+    "@x402/extensions": "^2.27.0",
+    "chalk": "^5.4.1",
+    "commander": "^14.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "gradient-string": "^3.0.0",
+    "http-proxy-middleware": "^3.0.5",
+    "ora": "^8.2.0",
+    "picocolors": "^1.1.1",
+    "viem": "^2.48.11",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/gradient-string": "^1.1.6",
+    "@types/node": "^22.15.21",
+    "tsup": "^8.5.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.1"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}

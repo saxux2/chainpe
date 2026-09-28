@@ -1,0 +1,87 @@
+{
+  "name": "@chainpe/agent",
+  "version": "3.0.0",
+  "description": "ChainPe Agent SDK — Pre-built AI agent with x402 payment capabilities on Arbitrum",
+  "type": "module",
+  "bin": {
+    "chainpe-agent": "./dist/cli.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saxux2/chainpe.git",
+    "directory": "packages/chainpe-agent"
+  },
+  "bugs": {
+    "url": "https://github.com/saxux2/chainpe/issues"
+  },
+  "homepage": "https://github.com/saxux2/chainpe/tree/main/packages/chainpe-agent#readme",
+  "author": "ChainPe",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "x402",
+    "arbitrum",
+    "ai-agent",
+    "sdk",
+    "micropayments",
+    "pay-per-request",
+    "http-402",
+    "blockchain",
+    "usdc",
+    "vercel-ai-sdk",
+    "openai",
+    "anthropic"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^2.0.70",
+    "@ai-sdk/google": "^2.0.62",
+    "@ai-sdk/openai": "^2.0.100",
+    "@ai-sdk/openai-compatible": "^2.0.35",
+    "@chainpe/sdk": "^0.3.0",
+    "@clack/prompts": "^0.9.1",
+    "@x402/core": "^2.27.0",
+    "@x402/evm": "^2.27.0",
+    "@x402/fetch": "^2.27.0",
+    "ai": "^6.0.116",
+    "chalk": "^5.4.1",
+    "commander": "^14.0.0",
+    "gradient-string": "^3.0.0",
+    "keytar": "^7.9.0",
+    "ora": "^8.2.0",
+    "picocolors": "^1.1.1",
+    "viem": "^2.48.11",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/gradient-string": "^1.1.6",
+    "@types/node": "^22.15.21",
+    "tsup": "^8.5.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}

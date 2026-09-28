@@ -1,0 +1,11 @@
+{
+  "network": "avalanche",
+  "chainId": 43114,
+  "policyVaultProxy": "0xFe38A9fE7bdA837549fed1b3608d138Bd9a168d8",
+  "policyVaultImpl": "0x4cED17f828375C6852B3651b214bE0F0171f4391",
+  "token": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+  "owner": "0x3b8a312fac101E7163F9701457d8Dc46cE8fd30a",
+  "deployer": "0x3b8a312fac101E7163F9701457d8Dc46cE8fd30a",
+  "deployedAt": "2026-06-17T06:10:32.960Z",
+  "upgradeable": true
+}

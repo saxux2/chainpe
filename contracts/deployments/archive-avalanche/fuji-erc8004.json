@@ -1,0 +1,10 @@
+{
+  "network": "fuji",
+  "chainId": 43113,
+  "identityRegistry": "0x56FEc2359fcDfFa6FA1D3a8AB3b708Ff698161D5",
+  "reputationRegistry": "0x89476DfEf9c72a668fa5E86f154B73EDB053aFe4",
+  "validationRegistry": "0xd8810c97B462FbD6b3706C12F588c58546f8159c",
+  "deployer": "0x8cC8dADfAd2D39659314106bAf4Da10B3BA38A36",
+  "deployedAt": "2026-06-13T12:02:07.603Z",
+  "note": "ERC-8004 reference contracts behind ERC-1967 proxies (UUPS)."
+}

@@ -1,0 +1,35 @@
+{
+  "name": "chainpe-seller-agents-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Agent-to-agent marketplace demo: LLM-backed seller agents (paid in USDC via x402) + buyer orchestrators, on Arbitrum.",
+  "scripts": {
+    "research": "node research-agent.mjs",
+    "digest": "node news-digest-agent.mjs",
+    "orchestrate": "node orchestrator.mjs",
+    "price": "node arbitrum-price-agent.mjs",
+    "news": "node arbitrum-news-agent.mjs",
+    "analysis": "node arbitrum-analysis-agent.mjs",
+    "dex": "node arbitrum-dex-agent.mjs",
+    "invest": "node investment-orchestrator.mjs",
+    "invest:cycles": "node investment-orchestrator.mjs --cycles 3",
+    "mcp": "node chainpe-mcp.mjs",
+    "mint": "node mint-identity.mjs",
+    "register": "node register-seller.mjs",
+    "register:all": "node register-all.mjs",
+    "fund": "node fund-sellers.mjs",
+    "wallets": "node gen-wallets.mjs"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^2.0.0",
+    "@chainpe/cli": "file:../../packages/chainpe",
+    "@chainpe/sdk": "file:../../packages/chainpe-sdk",
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "ai": "^6.0.0",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "viem": "^2.48.11",
+    "zod": "^3.23.0"
+  }
+}

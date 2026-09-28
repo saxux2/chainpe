@@ -1,0 +1,76 @@
+{
+  "name": "chainpe-wallet-mcp",
+  "version": "0.4.0",
+  "description": "ChainPe Wallet — MCP server giving Claude an Arbitrum x402 wallet that discovers and pays for services on the ChainPe on-chain registry",
+  "type": "module",
+  "bin": {
+    "chainpe-wallet-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write 'src/**/*.ts' '__tests__/**/*.ts'",
+    "format:check": "prettier --check 'src/**/*.ts' '__tests__/**/*.ts'",
+    "format:fix": "prettier --write 'src/**/*.ts' '__tests__/**/*.ts'",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build:mcpb": "bash scripts/build-mcpb.sh",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@x402/core": "^2.27.0",
+    "@x402/evm": "^2.27.0",
+    "viem": "^2.48.11",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@chainpe/sdk": "^0.3.0",
+    "@eslint/js": "^9.28.0",
+    "@types/node": "^22.15.21",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.57.2",
+    "vitest": "^3.2.1"
+  },
+  "keywords": [
+    "x402",
+    "wallet",
+    "mcp",
+    "usdc",
+    "arbitrum",
+    "payments",
+    "chainpe",
+    "agent-commerce"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saxux2/chainpe.git",
+    "directory": "packages/chainpe-wallet"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "homepage": "https://github.com/saxux2/chainpe/tree/main/packages/chainpe-wallet#readme",
+  "bugs": {
+    "url": "https://github.com/saxux2/chainpe/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            contracts/package-lock.json
+
+      - name: Install workspace
+        run: npm ci
+
+      - name: Install contracts
+        run: npm ci
+        working-directory: contracts
+
+      - name: Build packages
+        run: npm run build
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Contract tests
+        run: npx hardhat test
+        working-directory: contracts
+
+      # Package tests + e2e/local.test.mjs (local Hardhat node, no testnet funds)
+      - name: Tests
+        run: npm test

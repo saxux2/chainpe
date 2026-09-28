@@ -1,0 +1,14 @@
+{
+  "name": "chainpe-arbitrum-bench",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Live Arbitrum benchmark for ChainPe: block time, gas price and a measured x402 settlement.",
+  "scripts": {
+    "bench": "node bench.mjs"
+  },
+  "dependencies": {
+    "@chainpe/sdk": "file:../../packages/chainpe-sdk",
+    "viem": "^2.48.11"
+  }
+}

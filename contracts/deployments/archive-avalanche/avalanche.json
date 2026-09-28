@@ -1,0 +1,14 @@
+{
+  "network": "avalanche",
+  "chainId": 43114,
+  "chainPeRegistryProxy": "0x2a589f1e4e3Cd0A3ee986cec5202aF3760E3170E",
+  "chainPeRegistryImpl": "0xd3A9136F8D7F0DcEb2F97f70A7164743466D5E62",
+  "feeToken": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+  "feeRecipient": "0x3b8a312fac101E7163F9701457d8Dc46cE8fd30a",
+  "registrationFee": "1000000",
+  "identityRegistry": "0xB1330d7B1b083ba689C7f56bDf667F1F528a3195",
+  "owner": "0x3b8a312fac101E7163F9701457d8Dc46cE8fd30a",
+  "deployer": "0x3b8a312fac101E7163F9701457d8Dc46cE8fd30a",
+  "deployedAt": "2026-06-17T06:09:14.658Z",
+  "upgradeable": true
+}

@@ -1,0 +1,98 @@
+# @chainpe/ai-tools
+
+[![npm](https://img.shields.io/npm/v/@chainpe/ai-tools.svg)](https://www.npmjs.com/package/@chainpe/ai-tools)
+
+**Drop-in ChainPe tools for AI agents** — let any Vercel AI SDK or LangChain agent
+**discover, pay for, and rate** HTTP APIs and other agents per request in USDC on
+Arbitrum. Thin adapters over [`@chainpe/sdk`](../chainpe-sdk).
+
+Two tools per framework:
+
+- **`chainpeFetch` / `chainpe_fetch`** — call a URL; if it returns `402 Payment
+  Required`, pay it automatically in USDC (EIP-3009) and return the result.
+- **`discoverService` / `discover_service`** — search the ChainPe registry,
+  Coinbase's x402 Bazaar and ERC-8004 agent registration files in one call,
+  ranked by ERC-8004 reputation.
+
+```bash
+npm install @chainpe/ai-tools @chainpe/sdk
+# plus your framework: `ai` (Vercel AI SDK) or `@langchain/core`
+```
+
+## Vercel AI SDK
+
+```ts
+import { generateText, stepCountIs } from 'ai'
+import { anthropic } from '@ai-sdk/anthropic'
+import { createChainPeTools } from '@chainpe/ai-tools/vercel'
+
+const tools = createChainPeTools({
+  privateKey: process.env.PRIVATE_KEY!,
+  network: 'arbitrum-sepolia', // or 'arbitrum' for Arbitrum One
+  autoFeedback: true // leave on-chain reputation after each paid call
+})
+
+const { text } = await generateText({
+  model: anthropic('claude-opus-5-5'),
+  tools,
+  stopWhen: stepCountIs(8),
+  prompt: 'Find a summarizer agent on ChainPe and summarize today\'s top AI news.'
+})
+```
+
+## LangChain
+
+```ts
+import { ChatAnthropic } from '@langchain/anthropic'
+import { createReactAgent } from '@langchain/langgraph/prebuilt'
+import { createChainPeLangChainTools } from '@chainpe/ai-tools/langchain'
+
+const { chainpeFetchTool, discoverServiceTool } = createChainPeLangChainTools({
+  privateKey: process.env.PRIVATE_KEY!,
+  network: 'arbitrum-sepolia',
+  autoFeedback: true
+})
+
+const agent = createReactAgent({
+  llm: new ChatAnthropic({ model: 'claude-opus-5-5' }),
+  tools: [discoverServiceTool, chainpeFetchTool]
+})
+```
+
+## Options
+
+`createChainPeTools(options)` / `createChainPeLangChainTools(options)` take the same
+options as [`new ChainPe(...)`](../chainpe-sdk#api) — `privateKey`, `network`,
+`registryAddress?`, `reputationRegistry?`, `maxPerCall?`, `autoFeedback?`,
+`indexerUrl?` — or a
+pre-built client via `{ client }`:
+
+```ts
+import { ChainPe } from '@chainpe/sdk'
+const client = new ChainPe({ privateKey, network: 'arbitrum-sepolia' })
+const tools = createChainPeTools({ client })
+```
+
+`network` defaults to `arbitrum` (Arbitrum One, real USDC). Pass
+`'arbitrum-sepolia'` while testing; test USDC comes from https://faucet.circle.com.
+
+Reputation shown by `discover_service` is `verified: true` only when it comes from
+a ChainPe indexer (`indexerUrl` or `CHAINPE_INDEXER_URL`), which counts only
+reviewers who paid the service. Without one, scores are read from the chain and
+marked unverified.
+
+## Custom frameworks
+
+The framework-agnostic core is exported from the package root, so you can wire the
+same logic into any tool-calling runtime:
+
+```ts
+import { fetchInputSchema, runFetch, getClient } from '@chainpe/ai-tools'
+
+const client = getClient({ privateKey, network: 'arbitrum-sepolia' })
+const result = await runFetch(client, { url: 'https://api.example.com/paid' })
+```
+
+## License
+
+MIT

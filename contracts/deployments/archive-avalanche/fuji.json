@@ -1,0 +1,11 @@
+{
+  "network": "fuji",
+  "chainId": 43113,
+  "chainPeRegistry": "0x91677a35599f052E99Ed0ab9E45c17E736a22Bf6",
+  "feeToken": "0x5425890298aed601595a70AB815c96711a31Bc65",
+  "feeRecipient": "0x8cC8dADfAd2D39659314106bAf4Da10B3BA38A36",
+  "registrationFee": "100000",
+  "identityRegistry": "0x56FEc2359fcDfFa6FA1D3a8AB3b708Ff698161D5",
+  "deployer": "0x8cC8dADfAd2D39659314106bAf4Da10B3BA38A36",
+  "deployedAt": "2026-06-13T12:02:33.555Z"
+}

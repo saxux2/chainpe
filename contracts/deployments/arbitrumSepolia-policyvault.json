@@ -1,0 +1,12 @@
+{
+  "network": "arbitrumSepolia",
+  "chainId": 421614,
+  "policyVaultProxy": "0x9F363Ed70c49701Af50638fDd7849a164295b416",
+  "policyVaultImpl": "0xa7Dba8896c840B33041cdeEfB9E63B50EcC83F3E",
+  "token": "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+  "owner": "0xfa59D77cDc586A28E3a2c5487DF90a59AABF7105",
+  "deployer": "0xfa59D77cDc586A28E3a2c5487DF90a59AABF7105",
+  "deployBlock": 313653321,
+  "deployedAt": "2026-09-28T15:43:42.291Z",
+  "upgradeable": true
+}

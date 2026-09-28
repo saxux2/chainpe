@@ -1,0 +1,20 @@
+{
+  "name": "chainpe-proxy",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "ChainPe x402 v2 payment proxy for Arbitrum \u2014 reads config from environment variables",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "@x402/core": "^2.27.0",
+    "@x402/evm": "^2.27.0",
+    "@x402/express": "^2.27.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "http-proxy-middleware": "^3.0.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

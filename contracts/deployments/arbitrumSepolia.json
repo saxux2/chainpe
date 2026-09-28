@@ -1,0 +1,15 @@
+{
+  "network": "arbitrumSepolia",
+  "chainId": 421614,
+  "chainPeRegistryProxy": "0x3f1fC54d8A5AD97Cf72a9A46a813640630dcB783",
+  "chainPeRegistryImpl": "0xB33e475e80334CB8404F59E10B3bfB547186A699",
+  "feeToken": "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+  "feeRecipient": "0xfa59D77cDc586A28E3a2c5487DF90a59AABF7105",
+  "registrationFee": "1000000",
+  "identityRegistry": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+  "owner": "0xfa59D77cDc586A28E3a2c5487DF90a59AABF7105",
+  "deployer": "0xfa59D77cDc586A28E3a2c5487DF90a59AABF7105",
+  "deployBlock": 313653262,
+  "deployedAt": "2026-09-28T15:43:26.995Z",
+  "upgradeable": true
+}

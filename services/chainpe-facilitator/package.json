@@ -1,0 +1,37 @@
+{
+  "name": "chainpe-facilitator",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ChainPe x402 facilitator — non-custodial verify + settle service for USDC payments on Arbitrum",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsup src/server.ts --format esm --target node18 --clean",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@x402/core": "^2.27.0",
+    "@x402/evm": "^2.27.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.1",
+    "pino": "^9.6.0",
+    "viem": "^2.48.11"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.15.21",
+    "tsup": "^8.5.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

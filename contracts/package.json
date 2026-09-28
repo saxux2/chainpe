@@ -1,0 +1,46 @@
+{
+  "name": "@chainpe/contracts",
+  "version": "3.0.0",
+  "description": "ChainPe on-chain registry smart contracts for Arbitrum (Solidity)",
+  "type": "commonjs",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "coverage": "hardhat coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "hardhat clean",
+    "check-keys": "ts-node scripts/check-keys.ts",
+    "lint:sol": "npx solhint 'contracts/**/*.sol'",
+    "node": "hardhat node",
+    "deploy:sepolia": "hardhat run scripts/deploy.ts --network arbitrumSepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy.ts --network arbitrum",
+    "deploy:policyvault:sepolia": "hardhat run scripts/deploy-policyvault.ts --network arbitrumSepolia",
+    "deploy:policyvault:mainnet": "hardhat run scripts/deploy-policyvault.ts --network arbitrum",
+    "deploy:timelock:sepolia": "hardhat run scripts/deploy-timelock.ts --network arbitrumSepolia",
+    "deploy:timelock:mainnet": "hardhat run scripts/deploy-timelock.ts --network arbitrum",
+    "transfer-ownership:sepolia": "hardhat run scripts/transfer-ownership.ts --network arbitrumSepolia",
+    "transfer-ownership:mainnet": "hardhat run scripts/transfer-ownership.ts --network arbitrum",
+    "register-demo:sepolia": "hardhat run scripts/register-demo-services.ts --network arbitrumSepolia",
+    "register-demo:mainnet": "hardhat run scripts/register-demo-services.ts --network arbitrum",
+    "verify:sepolia": "hardhat run scripts/verify.ts --network arbitrumSepolia",
+    "verify:mainnet": "hardhat run scripts/verify.ts --network arbitrum",
+    "preflight:mainnet": "hardhat run scripts/preflight.ts --network arbitrum",
+    "postcheck:mainnet": "hardhat run scripts/postcheck.ts --network arbitrum"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.4.0",
+    "@openzeppelin/contracts-upgradeable": "5.4.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/chai": "^4.3.20",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "^22.0.0",
+    "chai": "^4.5.0",
+    "dotenv": "^16.5.0",
+    "hardhat": "^2.22.17",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
