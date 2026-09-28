@@ -59,6 +59,8 @@ Last updated: 2026-09-28 (Phase 6).
 - **Fixed, found in the rehearsal:** `@chainpe/agent`'s `PaymentClient` accepted an `onPayment` callback but never called it; it now fires after each settled payment. The SDK's PolicyVault ABI had no custom errors, so a rejected spend showed only a raw selector (`0xc4891db5`) instead of the reason `relaySpend` promises; the vault's errors are now in the ABI.
 - Contracts are owned by the deployer EOA on testnet (`OWNER_ADDRESS` empty); mainnet deploys refuse that.
 
+**Phase 7 — in progress (2026-09-28).** Done: 7.5 — the repo is `github.com/saxux2/chainpe` (every `OWNER` placeholder replaced); every package has `repository`/`homepage`/`bugs`, a LICENSE and `publishConfig.access: public`; `npm pack --dry-run` ships only `dist`, README, LICENSE and `package.json`, and no testnet key appears outside the gitignored `.env` files. `build:mcpb` now drops `devDependencies` before installing, so it no longer needs `@chainpe/sdk` on npm (the SDK is bundled). The wallet README and install docs describe `npx -y chainpe-wallet-mcp`. The wallet's LICENSE keeps its original "402.md" copyright line. **Not done:** 7.2 publishing (npm login on this machine didn't complete; the default registry here is npmmirror, so always pass `--registry=https://registry.npmjs.org`), 7.3 testing the `.mcpb` in Claude Desktop, 7.4 the `@chainpeavax/*` pointer releases (sdk 0.2.1, ai-tools 0.2.3, cli 2.0.2, agent 2.0.1 — the last published code with a "moved to `@chainpe/*`" README) and `npm deprecate`.
+
 **Out of scope for this guide:** deploying ChainPeRegistry / PolicyVault, and hosting the facilitator, indexer and dashboard. Some tasks below say *"needs testnet contracts"* — do those after the testnet deploy.
 
 ### Working conventions
