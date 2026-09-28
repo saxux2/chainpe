@@ -336,6 +336,7 @@ async function runStatus(): Promise<void> {
 
   console.log(chalk.gray("  Payment:"));
   console.log(chalk.gray(`    Token:    ${chalk.white(config.payment.preferredToken)}`));
+  console.log(chalk.gray(`    Max/call: ${chalk.white((config.payment.maxPricePerRequest ?? "10") + " USDC")}`));
   console.log();
 
   console.log(chalk.gray("  Registry:"));

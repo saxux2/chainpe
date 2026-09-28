@@ -208,7 +208,7 @@ x402 Bazaar and ERC-8004 registration files, ranked by reputation.
 ```
 
 The agent pays only in USDC or USDT0 on its configured network and refuses any
-single payment above 10 USDC.
+single payment above `payment.maxPricePerRequest` in `agent.json` (10 USDC if unset).
 
 ---
 
@@ -273,7 +273,7 @@ npx tsx weather-agent.ts
 
 ### "Payment failed"
 - Check the service charges on the same network as your agent.
-- Check the price is within the 10 USDC per-payment limit.
+- Check the price is within `payment.maxPricePerRequest` (10 USDC if unset).
 
 ---
 

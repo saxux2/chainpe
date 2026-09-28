@@ -43,7 +43,7 @@ export interface WalletConfig {
 
 export interface PaymentConfig {
   preferredToken: PaymentToken;
-  maxPricePerRequest?: string; // Optional spending limit
+  maxPricePerRequest?: string; // Max USDC per payment, e.g. "0.10" (default "10")
 }
 
 // ============================================================================

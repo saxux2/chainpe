@@ -44,7 +44,7 @@ export class PaymentClient {
     this.privateKey = options.privateKey;
     this.network = options.network || DEFAULT_AGENT_NETWORK;
     this.onPayment = options.onPayment;
-    this.maxValueAtomic = parseAmount(options.maxPerPayment ?? "10");
+    this.maxValueAtomic = parseMaxPerPayment(options.maxPerPayment ?? "10");
     this.address = addressFromPrivateKey(options.privateKey);
   }
 
@@ -210,6 +210,17 @@ export class PaymentClient {
     });
     return obj;
   }
+}
+
+/** Parses a USDC limit such as "0.10"; rejects anything that isn't a positive decimal. */
+function parseMaxPerPayment(value: string): bigint {
+  const trimmed = String(value).trim();
+  if (!/^\d+(\.\d{1,6})?$/.test(trimmed) || parseAmount(trimmed) <= 0n) {
+    throw new Error(
+      `Invalid max price per payment "${value}": use a positive USDC amount with at most 6 decimals, e.g. "0.10".`
+    );
+  }
+  return parseAmount(trimmed);
 }
 
 function formatAtomic(atomic: bigint): string {

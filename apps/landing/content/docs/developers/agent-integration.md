@@ -34,7 +34,7 @@ const result = await agent.run('Summarize the latest AI news', {
 console.log(result.text, result.payments.totalSpent.USDC)
 ```
 
-The agent defaults to Arbitrum Sepolia, pays only in USDC/USDT0 on its network, refuses single payments above 10 USDC, and posts ERC-8004 feedback with a proof of payment after each paid call.
+The agent defaults to Arbitrum Sepolia, pays only in USDC/USDT0 on its network, refuses single payments above `payment.maxPricePerRequest` (10 USDC if unset), and posts ERC-8004 feedback with a proof of payment after each paid call.
 
 ### Available tools in the agent
 

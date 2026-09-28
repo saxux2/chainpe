@@ -95,7 +95,11 @@ export class ChainPeAgent {
 
     // Initialize payment client with the key from keychain
     this.privateKey = privateKey;
-    this.paymentClient = new PaymentClient({ privateKey, network });
+    this.paymentClient = new PaymentClient({
+      privateKey,
+      network,
+      maxPerPayment: this.config.payment?.maxPricePerRequest || undefined,
+    });
 
     this.initialized = true;
   }

@@ -126,7 +126,8 @@ OS keychain):
     "useKeychain": true
   },
   "payment": {
-    "preferredToken": "USDC"
+    "preferredToken": "USDC",
+    "maxPricePerRequest": "0.10"
   },
   "network": "arbitrum-sepolia",
   "registryAddress": "0x…"
@@ -141,9 +142,10 @@ For a local model, use `"mode": "local"`, `"provider": "openai"`,
 | `network` | `arbitrum-sepolia` (default) or `arbitrum` |
 | `registryAddress` | ChainPeRegistry; also read from `CHAINPE_REGISTRY_ADDRESS`. Without it, discovery uses the Bazaar and ERC-8004 only. |
 | `reputationRegistry` | Defaults to the canonical ERC-8004 Reputation Registry |
+| `payment.maxPricePerRequest` | Max USDC for a single payment (default `10`); higher offers are refused |
 
 The agent pays only in USDC or USDT0 on its configured network and refuses any
-single payment above 10 USDC. Set `CHAINPE_INDEXER_URL` to rank services by
+single payment above `payment.maxPricePerRequest` (10 USDC if unset). Set `CHAINPE_INDEXER_URL` to rank services by
 payment-verified reputation.
 
 ## Supported LLMs
