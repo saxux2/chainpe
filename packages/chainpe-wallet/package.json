@@ -1,6 +1,6 @@
 {
   "name": "chainpe-wallet-mcp",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "ChainPe Wallet — MCP server giving Claude an Arbitrum x402 wallet that discovers and pays for services on the ChainPe on-chain registry",
   "type": "module",
   "bin": {

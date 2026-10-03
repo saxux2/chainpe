@@ -10,11 +10,12 @@ import { registerBazaarSearch } from '@/tools/bazaar-search.js'
 import { registerRequestFunding } from '@/tools/request-funding.js'
 import { registerSpendingReport } from '@/tools/spending-report.js'
 import { registerGiveFeedback } from '@/tools/give-feedback.js'
+import { registerSwap } from '@/tools/swap.js'
 
 export function createMcpServer(config: AppConfig): McpServer {
   const server = new McpServer({
     name: 'chainpe-wallet',
-    version: '0.4.0'
+    version: '0.5.0'
   })
 
   const spending = new SpendingTracker(config.budget)
@@ -23,6 +24,9 @@ export function createMcpServer(config: AppConfig): McpServer {
   registerCheckBalance(server, config)
   registerTransferUsdc(server, config, spending)
   registerTransferEth(server, config)
+
+  // Token swaps (Uniswap v3 on Sepolia, KyberSwap on Arbitrum One)
+  registerSwap(server, config)
 
   // x402 Payments
   registerPay(server, config, spending)

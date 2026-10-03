@@ -28,10 +28,12 @@ All tools:
 |---|---|
 | `search_bazaar` | Discover x402 services, ranked by reputation |
 | `x402_fetch` | Fetch a URL, paying any 402 automatically |
-| `check_balance` | USDC and ETH balance and wallet address |
+| `check_balance` | USDC, ETH and other token balances, and wallet address |
 | `pay` | Sign an x402 USDC payment authorization |
 | `transfer_usdc` | Send USDC to any address |
 | `transfer_eth` | Send ETH (for gas) |
+| `swap_quote` | Quote a token swap without executing it |
+| `swap_tokens` | Swap tokens on-chain (exact-amount approval, slippage guard) |
 | `spending_report` | What the agent spent today, and the limits |
 | `request_funding` | EIP-681 top-up link for USDC or ETH |
 | `give_feedback` | Post an ERC-8004 reputation score (0–100) |
@@ -43,6 +45,15 @@ provider manually; pass `paymentTxHash` and `payTo` to attach the same proof.
 `search_bazaar` marks each score as verified (from a ChainPe indexer, paying
 reviewers only) or unverified (raw on-chain summary).
 
+**Swaps:** on Arbitrum One, `swap_tokens` routes any pair of ETH, WETH, USDC,
+USDT0, ARB and WBTC through the KyberSwap aggregator and only sends funds to
+KyberSwap's MetaAggregationRouterV2. On Arbitrum Sepolia it swaps USDC ⇄ ETH/WETH
+on Uniswap v3, which is the only testnet pair with real liquidity (ARB has no
+testnet market, and testnet pool prices are not market prices). On testnet the wallet
+simulates each swap before sending it and refuses when price impact goes past the
+slippage tolerance. Swaps don't count toward `MAX_PER_DAY`. `MAX_SWAP_USD`
+caps each swap instead.
+
 ## Configuration
 
 Set via the Claude Desktop config form (or env vars when run directly):
@@ -53,6 +64,7 @@ Set via the Claude Desktop config form (or env vars when run directly):
 | Network (`arbitrum-sepolia` / `arbitrum`) | `NETWORK` | `arbitrum-sepolia` |
 | Max USDC per payment | `MAX_PER_CALL` | `0.10` |
 | Max USDC per day | `MAX_PER_DAY` | `20.00` |
+| Max input value per swap, USD (env only) | `MAX_SWAP_USD` | `25` |
 | ChainPeRegistry address | `CHAINPE_REGISTRY_ADDRESS` | — (registry search skipped if unset) |
 | ERC-8004 Reputation Registry | `ERC8004_REPUTATION_REGISTRY` | canonical registry for the network |
 | ChainPe indexer URL (env only, not in the form) | `CHAINPE_INDEXER_URL` | — (scores read on-chain, unverified) |

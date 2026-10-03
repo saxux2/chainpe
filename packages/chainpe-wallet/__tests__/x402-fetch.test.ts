@@ -32,6 +32,7 @@ function makeConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     network: 'arbitrum-sepolia',
     registryAddress: undefined,
     budget: { maxPerCall: '1.00', maxPerDay: '20.00' },
+    maxSwapUsd: '25',
     canPay: false,
     mode: 'READ_ONLY',
     reload: vi.fn(),

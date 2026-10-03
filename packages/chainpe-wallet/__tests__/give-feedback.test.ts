@@ -15,6 +15,7 @@ function makeConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     privateKey: '0xkey',
     network: 'arbitrum-sepolia',
     budget: { maxPerCall: '1', maxPerDay: '1' },
+    maxSwapUsd: '25',
     canPay: true,
     mode: 'ARBITRUM',
     reload: () => {},

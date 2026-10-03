@@ -31,6 +31,8 @@ function buildState(): Omit<AppConfig, 'reload'> {
   const maxPerCall = process.env.MAX_PER_CALL ?? '0.10'
   const maxPerDay = process.env.MAX_PER_DAY ?? '20.00'
 
+  const maxSwapUsd = process.env.MAX_SWAP_USD ?? '25'
+
   const canPay = !!privateKey
 
   return {
@@ -39,6 +41,7 @@ function buildState(): Omit<AppConfig, 'reload'> {
     registryAddress,
     reputationRegistry,
     budget: { maxPerCall, maxPerDay },
+    maxSwapUsd,
     canPay,
     mode: canPay ? 'ARBITRUM' : 'READ_ONLY'
   }

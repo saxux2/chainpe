@@ -12,6 +12,7 @@
     "news": "node arbitrum-news-agent.mjs",
     "analysis": "node arbitrum-analysis-agent.mjs",
     "dex": "node arbitrum-dex-agent.mjs",
+    "agents": "node start-arbitrum-agents.mjs",
     "invest": "node investment-orchestrator.mjs",
     "invest:cycles": "node investment-orchestrator.mjs --cycles 3",
     "mcp": "node chainpe-mcp.mjs",

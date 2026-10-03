@@ -9,6 +9,8 @@ export interface AppConfig {
   registryAddress?: string
   reputationRegistry?: string
   budget: BudgetConfig
+  /** Per-swap cap on the input value, in USD. */
+  maxSwapUsd: string
   canPay: boolean
   mode: 'READ_ONLY' | 'ARBITRUM'
   reload(): void

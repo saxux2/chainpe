@@ -4,7 +4,10 @@
  *   POST /news { "limit": 10 }  → top Arbitrum news + LLM synthesis (paid)
  *   GET  /health                → free
  *
- * Run: node arbitrum-news-agent.mjs  (needs ANTHROPIC_API_KEY + NEWS_PAYTO)
+ * Sources: Cointelegraph, Google News, Offchain Labs, The Block, CoinDesk, Decrypt (RSS)
+ *          + DeFiLlama hacks/raises. Claude synthesis when ANTHROPIC_API_KEY is set.
+ *
+ * Run: node arbitrum-news-agent.mjs  (needs NEWS_PAYTO)
  */
 import 'dotenv/config'
 import express from 'express'
@@ -14,7 +17,56 @@ import { z } from 'zod'
 import { startSeller, requireEnv } from './seller-runtime.mjs'
 
 const MODEL = process.env.NEWS_MODEL || 'claude-haiku-4-5-20251001'
-if (!process.env.ANTHROPIC_API_KEY) requireEnv('ANTHROPIC_API_KEY')
+// The LLM synthesis is optional: without ANTHROPIC_API_KEY the agent still
+// returns the raw headlines plus a rule-based digest.
+const HAS_LLM = !!process.env.ANTHROPIC_API_KEY
+
+const RSS_FEEDS = [
+  { url: 'https://cointelegraph.com/rss/tag/arbitrum', source: 'Cointelegraph', filter: false },
+  { url: 'https://news.google.com/rss/search?q=arbitrum+(defi+OR+ARB+OR+crypto)+when:7d&hl=en-US&gl=US&ceid=US:en', source: 'Google News', filter: false },
+  { url: 'https://medium.com/feed/offchainlabs', source: 'Offchain Labs', filter: false },
+  { url: 'https://www.theblock.co/rss.xml', source: 'The Block', filter: true },
+  { url: 'https://www.coindesk.com/arc/outboundfeeds/rss/', source: 'CoinDesk', filter: true },
+  { url: 'https://decrypt.co/feed', source: 'Decrypt', filter: true },
+]
+
+const isArbitrum = (text) => /arbitrum|\barb\b|offchain labs|robinhood chain|\bgmx\b/i.test(text)
+
+const decode = (s) =>
+  s
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+    // Feeds often entity-encode their HTML, so decode before stripping tags.
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"').replace(/&#39;|&#x27;|&apos;/g, "'").replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+const tag = (xml, name) => {
+  const m = xml.match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)</${name}>`, 'i'))
+  return m ? decode(m[1]) : ''
+}
+
+async function fetchFeed({ url, source, filter }) {
+  try {
+    const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (chainpe-news-agent)' }, signal: AbortSignal.timeout(10_000) })
+    if (!r.ok) return []
+    const xml = await r.text()
+    return [...xml.matchAll(/<item[\s>][\s\S]*?<\/item>/gi)]
+      .map(([item]) => ({
+        title: tag(item, 'title'),
+        description: tag(item, 'description').slice(0, 280),
+        url: tag(item, 'link') || null,
+        source: tag(item, 'source') || source,
+        feed: source,
+        publishedAt: tag(item, 'pubDate') ? new Date(tag(item, 'pubDate')).toISOString() : null,
+      }))
+      .filter((a) => !filter || isArbitrum(`${a.title} ${a.description}`))
+  } catch {
+    return []
+  }
+}
 
 const app = express()
 app.use(express.json())
@@ -29,39 +81,31 @@ app.get('/schema', (_req, res) => res.json({
 }))
 
 app.post('/news', async (req, res) => {
-  const limit = Math.min(Number(req.body?.limit ?? 10), 20)
+  const limit = Math.min(Math.max(Number(req.body?.limit ?? 10) || 10, 1), 30)
 
   try {
-    // Fetch news from multiple free sources
-    const cgRes = await fetch(
-      'https://api.coingecko.com/api/v3/news?per_page=' + limit,
-      { headers: { Accept: 'application/json' } }
-    ).catch(() => null)
-
     const rawItems = []
 
-    // CoinGecko news (filter for Arbitrum)
-    if (cgRes?.ok) {
-      const cgNews = await cgRes.json().catch(() => ({}))
-      const articles = cgNews.data ?? cgNews ?? []
-      if (Array.isArray(articles)) {
-        articles
-          .filter((a) => {
-            const text = ((a.title ?? '') + ' ' + (a.description ?? '')).toLowerCase()
-            return text.includes('arbitrum') || /\barb\b/.test(text) || text.includes('offchain labs')
-          })
-          .slice(0, limit)
-          .forEach((a) =>
-            rawItems.push({
-              title: a.title ?? a.news_title,
-              description: a.description ?? a.text ?? '',
-              url: a.url ?? a.news_url,
-              source: a.author ?? a.source_name ?? 'CoinGecko News',
-              publishedAt: a.updated_at ?? a.date,
-            })
-          )
-      }
-    }
+    // RSS feeds (free, no keys). Arbitrum-specific feeds are taken as-is; general
+    // crypto feeds are filtered for Arbitrum mentions.
+    const feeds = await Promise.all(RSS_FEEDS.map((f) => fetchFeed(f)))
+    // Aggregators repeat one story per outlet ("Title - Outlet"), so dedupe on
+    // the bare title, and cap any one source at half the digest.
+    const seen = new Set()
+    const perSource = {}
+    const maxPerSource = Math.ceil(limit / 2)
+    feeds
+      .flat()
+      .sort((a, b) => (Date.parse(b.publishedAt) || 0) - (Date.parse(a.publishedAt) || 0))
+      .filter((a) => {
+        const key = a.title.replace(/\s+-\s+[^-]+$/, '').toLowerCase()
+        if (!a.title || seen.has(key)) return false
+        seen.add(key)
+        return true
+      })
+      .filter((a) => (perSource[a.feed] = (perSource[a.feed] ?? 0) + 1) <= maxPerSource)
+      .slice(0, limit)
+      .forEach((a) => rawItems.push(a))
 
     // DeFiLlama doesn't have a /news endpoint, use raised/hacks data as signals
     const [hacksRes, raisesRes] = await Promise.all([
@@ -118,6 +162,7 @@ app.post('/news', async (req, res) => {
 
     let synthesis
     try {
+      if (!HAS_LLM) throw new Error('ANTHROPIC_API_KEY not set')
       const { object } = await generateObject({
         model: anthropic(MODEL),
         schema: z.object({
@@ -140,9 +185,11 @@ app.post('/news', async (req, res) => {
         headline: rawItems[0]?.title ?? 'Arbitrum ecosystem update',
         sentiment: hackCount > 0 ? 'bearish' : 'neutral',
         keyDevelopments: rawItems.slice(0, 5).map((i) => i.title).filter(Boolean),
-        protocols: ['GMX', 'Aave', 'Uniswap', 'Pendle'],
-        riskFactors: ['Market volatility', 'Smart contract risk', 'Liquidity constraints'],
-        tradingImplications: 'No LLM synthesis available — using raw signal data only.',
+        protocols: ['GMX', 'Aave', 'Uniswap', 'Pendle'].filter((p) =>
+          rawItems.some((i) => `${i.title} ${i.description}`.toLowerCase().includes(p.toLowerCase()))
+        ),
+        riskFactors: rawItems.filter((i) => i.source?.includes('Hack')).map((i) => i.title),
+        tradingImplications: 'No LLM synthesis — raw headlines only. Read the articles before trading.',
         llmSkipped: true,
         llmError: llmErr?.message?.slice(0, 100),
       }
@@ -150,10 +197,10 @@ app.post('/news', async (req, res) => {
 
     res.json({
       agent: 'arbitrum-news-agent',
-      model: MODEL,
+      model: HAS_LLM ? MODEL : null,
       timestamp: new Date().toISOString(),
       articlesFound: rawItems.length,
-      articles: rawItems.slice(0, 5),
+      articles: rawItems.slice(0, limit),
       ...synthesis,
     })
   } catch (err) {
@@ -168,7 +215,7 @@ await startSeller({
   proxyPort: Number(process.env.NEWS_PROXY_PORT || 4504),
   payTo: requireEnv('NEWS_PAYTO'),
   price: process.env.NEWS_PRICE || '0.02',
-  description: 'Latest Arbitrum ecosystem news, LLM-synthesized into investment signals.',
-  tags: ['arbitrum', 'news', 'research'],
+  description: 'Latest Arbitrum ecosystem and DeFi news (Cointelegraph, The Block, CoinDesk, Decrypt, Google News) plus DeFiLlama hacks and raises, with an optional Claude digest.',
+  tags: ['arbitrum', 'news', 'defi', 'research'],
   agentId: process.env.NEWS_AGENT_ID,
 })

@@ -21,7 +21,8 @@ buyer (orchestrator.mjs)
 | News-digest seller (`POST /summarize {text}`) | `news-digest-agent.mjs` |
 | Buyer orchestrator (discover → hire both → compose) | `orchestrator.mjs` |
 | Price seller — ETH/ARB prices, Arbitrum TVL (`GET /price`, `/defi`) | `arbitrum-price-agent.mjs` |
-| News seller — Arbitrum news + LLM synthesis (`POST /news`) | `arbitrum-news-agent.mjs` |
+| News seller — Arbitrum + DeFi news from RSS and DeFiLlama, optional Claude digest (`POST /news`) | `arbitrum-news-agent.mjs` |
+| Launcher for the price, news and DEX sellers (`npm run agents`) | `start-arbitrum-agents.mjs` |
 | Analysis seller — BUY/SELL/HOLD on ETH (`POST /analyze`) | `arbitrum-analysis-agent.mjs` |
 | DEX seller — best-route quotes on Arbitrum One (`POST /quote`) | `arbitrum-dex-agent.mjs` |
 | Investment orchestrator (hires all four, paper-trades ETH/USDC) | `investment-orchestrator.mjs` |
@@ -88,6 +89,18 @@ agent fees are real payments.
 REGISTER=1 ORCHESTRATE=1 TOPIC="..." ./launch.sh
 ./demo.sh                                # fund + register + run the investment demo
 ```
+
+## Price, news and DEX sellers only (no API keys)
+
+These three need no Anthropic key. Set `PRICE_/NEWS_/DEX_PAYTO` (and `*_AGENT_ID`
+after registering) in `.env`, then:
+
+```bash
+npm run agents
+```
+
+The launcher restarts a seller that crashes or whose gateway stops answering 402.
+That happens when the facilitator can't be reached at startup.
 
 ## Claude Desktop
 

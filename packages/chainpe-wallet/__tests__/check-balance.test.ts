@@ -6,7 +6,8 @@ import { registerCheckBalance } from '../src/tools/check-balance.js'
 vi.mock('../src/clients.js', () => ({
   getWalletAddress: vi.fn(),
   getUsdcBalance: vi.fn(),
-  getEthBalance: vi.fn()
+  getEthBalance: vi.fn(),
+  getTokenBalances: vi.fn().mockResolvedValue({})
 }))
 
 import { getWalletAddress, getUsdcBalance, getEthBalance } from '../src/clients.js'
@@ -17,6 +18,7 @@ function makeConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     network: 'arbitrum',
     registryAddress: undefined,
     budget: { maxPerCall: '1.00', maxPerDay: '20.00' },
+    maxSwapUsd: '25',
     canPay: false,
     mode: 'READ_ONLY',
     reload: vi.fn(),

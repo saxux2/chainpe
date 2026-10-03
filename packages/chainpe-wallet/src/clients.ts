@@ -91,3 +91,31 @@ export async function getEthBalance(
     return 'unavailable'
   }
 }
+
+/** Non-zero ERC-20 balances for the given tokens, keyed by symbol. */
+export async function getTokenBalances(
+  network: PaymentNetwork,
+  address: string,
+  tokens: { symbol: string; address: `0x${string}`; decimals: number }[]
+): Promise<Record<string, string>> {
+  const client = publicClientFor(network)
+  const owner = getAddress(address)
+  const entries = await Promise.all(
+    tokens.map(async t => {
+      try {
+        const raw = (await client.readContract({
+          address: t.address,
+          abi: erc20Abi,
+          functionName: 'balanceOf',
+          args: [owner]
+        })) as bigint
+        return raw > 0n
+          ? ([t.symbol, formatUnits(raw, t.decimals)] as const)
+          : null
+      } catch {
+        return null
+      }
+    })
+  )
+  return Object.fromEntries(entries.filter(e => e !== null))
+}
