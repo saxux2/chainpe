@@ -52,6 +52,17 @@ Validation transactions (Phase 6, 2026-09-28; scripts in `e2e/testnet/`):
 | 6.5 | Vault: third 0.5 USDC spend rejected — `OverDailyCap` (no tx; reverts in simulation) | — |
 | 6.5 | Vault: withdraw remaining 1 USDC | [`0xaf91ccad…`](https://sepolia.arbiscan.io/tx/0xaf91ccade675a69a6aa7ef6eebe8ae2c6932cb694f9ac60e3e992fced9edcb87) |
 
+Marketplace sellers and test ARB market (2026-10-03):
+
+| What | Address / ID | Tx |
+|---|---|---|
+| Arbitrum Price Agent (agent #256, `http://localhost:4503`) | `0xc7B05Fb4F550aBcd8a7bE020D197da5a5c44aDf3` | [`0x083a51b0…`](https://sepolia.arbiscan.io/tx/0x083a51b08160a8fa62e376806b4f1d7c2693f3d46230af23da31943c6e8ea9a4) |
+| Arbitrum News Agent (agent #257, `http://localhost:4504`) | `0x8ab6186d056Db6611436e66431E89b0359ccAAda` | [`0xc42f9cda…`](https://sepolia.arbiscan.io/tx/0xc42f9cdabe99800f6f3ce40c66d3d40d28534853bc8a18dabe882b904fdd2af1) |
+| Arbitrum DEX Agent (agent #258, `http://localhost:4506`) | `0xA1b3EF4F7bF77CF5E8acF156B6dCC6f00e067bEf` | [`0x586058c2…`](https://sepolia.arbiscan.io/tx/0x586058c25b342a6fedfaadeef0c40bdfe9268afababff663dc02836079e1670c) |
+| TestARB (tARB), stand-in for ARB (`contracts/contracts/mocks/TestARB.sol`) | `0x32aFb2F080A755Da6673d43912663C7cc26F1a5D` | [`0xf7283191…`](https://sepolia.arbiscan.io/tx/0xf72831910d1e93762eb3e7f921f93bca36a1997918083f52e3f3fb47db38803b) |
+| Uniswap v3 USDC/tARB 0.3% pool, seeded at $0.1974/ARB (`e2e/testnet/tarb-pool.mjs`) | `0x9a65552c544CD240D640069eFa63238234910A93` | [`0xd2d6a92c…`](https://sepolia.arbiscan.io/tx/0xd2d6a92c5b671662c6038c29e8deb9849104824af5429a8ed4c1f4c124a4c266) |
+| Wallet MCP `swap_tokens` 1 USDC → 5.039 tARB | — | [`0x8325bef7…`](https://sepolia.arbiscan.io/tx/0x8325bef7eba57b2eb0189748c9b67b328586fa2088afabccbc7a14c346412d54) |
+
 ### Arbitrum One (mainnet)
 
 Not deployed yet.

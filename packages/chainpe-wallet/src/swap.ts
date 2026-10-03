@@ -62,8 +62,11 @@ const MAINNET_TOKENS: Record<string, SwapToken> = {
   }
 }
 
-// Arbitrum Sepolia: only USDC/WETH has real Uniswap v3 liquidity.
+// Arbitrum Sepolia: USDC/WETH has real Uniswap v3 liquidity. Real ARB has no
+// testnet market, so ARB maps to TestARB (tARB), a stand-in token with a
+// USDC/tARB pool seeded at the live ARB price (e2e/testnet/tarb-pool.mjs).
 const SEPOLIA_WETH: Address = '0x980B62Da83eFf3D4576C647993b0c1D7faf17c73'
+const SEPOLIA_TARB: Address = '0x32aFb2F080A755Da6673d43912663C7cc26F1a5D'
 const SEPOLIA_TOKENS: Record<string, SwapToken> = {
   ETH: { symbol: 'ETH', address: SEPOLIA_WETH, decimals: 18, native: true },
   USDC: {
@@ -71,11 +74,13 @@ const SEPOLIA_TOKENS: Record<string, SwapToken> = {
     address: getUsdcAddress('arbitrum-sepolia'),
     decimals: 6
   },
-  WETH: { symbol: 'WETH', address: SEPOLIA_WETH, decimals: 18 }
+  WETH: { symbol: 'WETH', address: SEPOLIA_WETH, decimals: 18 },
+  ARB: { symbol: 'tARB', address: SEPOLIA_TARB, decimals: 18 }
 }
 
 const ALIASES: Record<string, string> = {
   ARBITRUM: 'ARB',
+  TARB: 'ARB',
   USDT: 'USDT0',
   BTC: 'WBTC'
 }

@@ -13,7 +13,15 @@ import {
 
 const tokenDescription =
   'Token symbol. Arbitrum One: ETH, WETH, USDC, USDT0, ARB, WBTC. ' +
-  'Arbitrum Sepolia (testnet): ETH, WETH, USDC.'
+  'Arbitrum Sepolia (testnet): ETH, WETH, USDC, ARB (= tARB, a test stand-in).'
+
+/** Caveat for testnet swaps; tARB tracks the real ARB price, USDC/WETH doesn't. */
+function testnetNote(q: SwapQuote): string | undefined {
+  if (q.network === 'arbitrum') return undefined
+  return [q.from.symbol, q.to.symbol].includes('tARB')
+    ? 'Arbitrum Sepolia: tARB is a worthless test stand-in for ARB; its pool was seeded at the live ARB price.'
+    : 'Arbitrum Sepolia: test tokens; pool prices are not real market prices.'
+}
 
 function describeQuote(q: SwapQuote) {
   const amountIn = Number(formatUnits(q.amountIn, q.from.decimals))
@@ -32,9 +40,7 @@ function describeQuote(q: SwapQuote) {
     ...(q.estimated && {
       note: 'Spot-price estimate; swap_tokens simulates the exact output.'
     }),
-    ...(q.network !== 'arbitrum' && {
-      testnet: 'Arbitrum Sepolia pool prices are not real market prices.'
-    })
+    ...(testnetNote(q) && { testnet: testnetNote(q) })
   }
 }
 
@@ -91,7 +97,7 @@ export function registerSwap(server: McpServer, config: AppConfig): void {
     'swap_tokens',
     'Swap tokens on-chain from your wallet on Arbitrum (real transaction, needs a little ETH for gas). ' +
       'Arbitrum One: any pair of ETH, WETH, USDC, USDT0, ARB, WBTC via KyberSwap. Arbitrum Sepolia: ' +
-      'USDC ⇄ ETH/WETH via Uniswap v3 (ARB has no testnet market). Approves only the exact amount, ' +
+      'USDC ⇄ ETH/WETH/ARB via Uniswap v3, where ARB is tARB, a test token priced at the live ARB price. Approves only the exact amount, ' +
       'enforces slippage protection and the MAX_SWAP_USD cap. "Arbitrum" as a token means ARB.',
     {
       fromToken: z.string().describe(tokenDescription),
@@ -152,10 +158,7 @@ export function registerSwap(server: McpServer, config: AppConfig): void {
                   ...(result.approvalTxHash && {
                     approvalTx: explorerTxUrl(net, result.approvalTxHash)
                   }),
-                  ...(net !== 'arbitrum' && {
-                    testnet:
-                      'Arbitrum Sepolia — test tokens, pool prices are not real market prices.'
-                  })
+                  ...(testnetNote(quote) && { testnet: testnetNote(quote) })
                 },
                 null,
                 2

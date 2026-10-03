@@ -48,8 +48,10 @@ reviewers only) or unverified (raw on-chain summary).
 **Swaps:** on Arbitrum One, `swap_tokens` routes any pair of ETH, WETH, USDC,
 USDT0, ARB and WBTC through the KyberSwap aggregator and only sends funds to
 KyberSwap's MetaAggregationRouterV2. On Arbitrum Sepolia it swaps USDC ⇄ ETH/WETH
-on Uniswap v3, which is the only testnet pair with real liquidity (ARB has no
-testnet market, and testnet pool prices are not market prices). On testnet the wallet
+and USDC ⇄ ARB on Uniswap v3. Real ARB has no testnet market, so on Sepolia ARB
+means tARB (`0x32aF…1a5D`), a test token whose USDC pool was seeded at the live
+ARB price by `e2e/testnet/tarb-pool.mjs`. USDC/WETH testnet prices are not market
+prices. On testnet the wallet
 simulates each swap before sending it and refuses when price impact goes past the
 slippage tolerance. Swaps don't count toward `MAX_PER_DAY`. `MAX_SWAP_USD`
 caps each swap instead.

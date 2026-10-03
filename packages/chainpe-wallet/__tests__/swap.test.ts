@@ -37,8 +37,13 @@ describe('resolveSwapToken', () => {
     expect(resolveSwapToken('arbitrum', 'usdc').decimals).toBe(6)
   })
 
-  it('explains that ARB has no testnet market', () => {
-    expect(() => resolveSwapToken('arbitrum-sepolia', 'ARB')).toThrow(
+  it('maps ARB to the tARB stand-in on Arbitrum Sepolia', () => {
+    expect(resolveSwapToken('arbitrum-sepolia', 'arbitrum').symbol).toBe('tARB')
+    expect(resolveSwapToken('arbitrum-sepolia', 'tARB').symbol).toBe('tARB')
+  })
+
+  it('explains mainnet-only tokens on testnet', () => {
+    expect(() => resolveSwapToken('arbitrum-sepolia', 'WBTC')).toThrow(
       /no market on Arbitrum Sepolia/
     )
   })
